@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Am Hartono — Modern Interior Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <!-- GSAP for Luxury Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Hilangkan scrollbar untuk Chrome, Safari dan Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hilangkan scrollbar untuk IE, Edge dan Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(1rem);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .active-filter {
+            background-color: white;
+            color: black;
+        }
+
+        /* Lightbox Premium Styles */
+        #lightbox {
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .lightbox-content {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 1300px;
+            /* Diperlebar dari 1100px agar teks tidak menumpuk ke bawah */
+            width: 95%;
+            max-height: 90vh;
+            /* Membatasi agar lightbox tidak lebih tinggi dari layar */
+            display: flex;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        #lightbox:not(.hidden) .lightbox-content {
+            transform: scale(1);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 0;
+            margin: 2rem 0;
+        }
+
+        .spec-item label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-item span {
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .btn-whatsapp {
+            background: #fff;
+            color: #000;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background: #25D366;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+
+            /* Pastikan kontainer utama pop-up bisa di-scroll ke bawah secara utuh */
+            .lightbox-content {
+                flex-direction: column !important;
+                overflow-y: auto !important;
+                max-height: 95vh !important;
+                width: 94%;
+            }
+
+            /* Ubah tinggi kontainer agar menyesuaikan dengan isinya (Gambar + Thumbnail) */
+            .lightbox-img-container {
+                height: auto !important;
+                min-height: 400px;
+                /* Tambahkan min-height agar lebih lega */
+                padding: 20px 10px 40px 10px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                /* Mulai dari atas agar tidak terpotong */
+                align-items: center !important;
+                width: 100% !important;
+                gap: 20px !important;
+            }
+
+            /* Batasi tinggi gambar utama agar tidak memakan seluruh layar HP */
+            #lb-img {
+                max-height: 45vh !important;
+                width: 100% !important;
+                height: auto !important;
+                object-fit: contain !important;
+                margin-bottom: 5px;
+            }
+
+            /* Container wrapper untuk galeri dan panah */
+            .lightbox-img-container>div.relative {
+                margin-top: 0 !important;
+                display: flex !important;
+                width: 100% !important;
+            }
+
+            /* Pastikan baris thumbnail memiliki ruang yang cukup */
+            #lb-gallery {
+                display: flex !important;
+                width: 100%;
+                overflow-x: auto;
+                height: auto !important;
+                min-height: 90px;
+                /* Naikkan sedikit */
+                flex-shrink: 0;
+                padding-bottom: 10px;
+                gap: 12px !important;
+            }
+
+            .gallery-thumb {
+                width: 70px !important;
+                /* Kecilkan sedikit untuk mobile */
+                height: 70px !important;
+                flex-shrink: 0 !important;
+                /* WAJIB agar tidak gepeng/hilang */
+                opacity: 0.8 !important;
+                /* Lebih terlihat di mobile */
+            }
+
+            /* Penyesuaian Padding pada Deskripsi */
+            .w-full.md\:w-\[40\%\] {
+                padding: 25px 20px !important;
+                background: #0f0f0f;
+            }
+
+            /* Penyesuaian Slider Before/After di HP */
+            .ba-container {
+                height: 350px !important;
+                border-radius: 16px;
+            }
+
+            .ba-slider::after {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+
+            .ba-container div[class*="absolute"] {
+                font-size: 10px;
+                padding: 4px 10px;
+                bottom: 15px;
+            }
+
+            .ba-img {
+                object-fit: contain;
+                background-color: #111;
+            }
+        }
+
+        /* Custom Cursor */
+        #cursor-follower {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: width 0.3s, height 0.3s, background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0;
+            color: black;
+            font-weight: 700;
+            mix-blend-mode: difference;
+        }
+
+        #cursor-follower.hovering {
+            width: 80px;
+            height: 80px;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            background: white;
+            mix-blend-mode: normal;
+        }
+
+        /* Before/After Slider */
+        .ba-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+
+        .ba-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ba-after {
+            width: 50%;
+            z-index: 2;
+            clip-path: inset(0 0 0 50%);
+        }
+
+        .ba-slider {
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+            left: 50%;
+            cursor: ew-resize;
+        }
+
+        .ba-slider::after {
+            content: "↔";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            color: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Testimonials */
+        .testimonial-text {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Lightbox Gallery */
+        .gallery-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+
+        .gallery-thumb.active {
+            opacity: 1;
+            border: 2px solid white;
+        }
+
+        /* Lightbox Image Optimization */
+        #lb-img {
+            object-fit: contain !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #000;
+        }
+
+        .lightbox-img-container {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex !important;
+            flex-direction: column !important;
+            /* Memastikan gambar di atas dan galeri di bawah */
+            align-items: center !important;
+            justify-content: space-between !important;
+            /* Memberikan jarak antar elemen */
+            overflow: hidden;
+            padding: 30px 20px;
+            /* Menambah padding atas dan bawah agar tidak mepet */
+        }
+
+        @media (min-width: 768px) {
+            .lightbox-img-container {
+                width: 60%;
+                height: auto;
+                min-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-[#0a0a0a] text-white antialiased cursor-none">
+    <div id="cursor-follower"></div>
+
+    <nav
+        class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-6 backdrop-blur-lg bg-black/40 border-b border-white/10">
+        <a href="#" class="cursor-none block">
+            <img src="asset/logohartono.png" alt="Hartono Logo" class="h-18 md:h-20 w-auto object-contain">
+        </a>
+        <div class="hidden md:flex gap-10 text-sm uppercase tracking-widest font-light">
+            <a href="#projects" class="hover:text-neutral-400 transition">Projects</a>
+            <a href="#about" class="hover:text-neutral-400 transition">About</a>
+            <a href="#contact" class="hover:text-neutral-400 transition">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="shareWebsite()"
+                class="p-2.5 border border-white/30 rounded-full hover:bg-white hover:text-black transition flex items-center justify-center group cursor-none"
+                title="Share Website">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" class="group-hover:stroke-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+            </button>
+
+            <a href="https://wa.me/6281314436345" target="_blank" rel="noopener noreferrer"
+                class="p-2.5 border border-white/30 rounded-full hover:bg-[#25D366] hover:border-[#25D366] transition flex items-center justify-center group cursor-none"
+                title="Chat via WhatsApp">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                    class="text-white group-hover:text-white transition">
+                    <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.892-5.335 11.895-11.892a11.817 11.817 0 00-3.418-8.413z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative h-[70vh] md:h-screen flex items-center justify-center text-center overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-transparent z-10"></div>
+
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-100"
+            style="filter: brightness(1.3);">
+            <source src="asset/mykitchen.mp4" type="video/mp4">
+        </video>
+
+        <div class="relative z-20 max-w-4xl px-6 reveal">
+            <span class="text-xs uppercase tracking-[0.3em] mb-4 block text-white font-bold"
+                style="text-shadow: 0px 1px 5px rgba(0,0,0,0.8);">
+                Premium Interior Design
+            </span>
+            <h2 class="text-5xl md:text-8xl font-semibold leading-tight mb-8"
+                style="text-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                Elevating Modern <br><span class="italic font-light">Living Spaces</span>
+            </h2>
+            <p class="max-w-xl mx-auto text-white text-lg mb-10 leading-relaxed font-bold"
+                style="text-shadow: 0px 1px 3px rgba(0,0,0,0.5), 0px 2px 10px rgba(0,0,0,0.8);">
+                "Mewujudkan ruang impian Anda. Saya memadukan kenyamanan dan kemewahan modern melalui pemilihan detail
+                yang presisi. Dari konsep hingga hasil akhir, saya memastikan setiap sudut ruangan mencerminkan
+                kepribadian dan kebutuhan Anda."
+
+            </p>
+            <a href="#projects"
+                class="inline-block px-10 py-4 bg-white text-black font-semibold rounded-full hover:bg-neutral-200 transition-all transform hover:-translate-y-1">
+                Lihat Karya Kami
+            </a>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 px-6 md:px-12">
+        <div class="flex flex-wrap justify-center gap-3 mb-16">
+            <button onclick="filterProjects('All')"
+                class="filter-btn active-filter px-8 py-2 border border-white/20 rounded-full text-sm transition">All</button>
+            <button onclick="filterProjects('Residential')"
+                class="filter-btn px-8 py-2 border border-white/20 rounded-full text-sm transition">Residential</button>
+            <button onclick="filterProjects('Apartment')"
+                class="filter-btn px-8 py-2 border border-white/20 rounded-full text-sm transition">Apartment</button>
+            <button onclick="filterProjects('Commercial')"
+                class="filter-btn px-8 py-2 border border-white/20 rounded-full text-sm transition">Commercial</button>
+        </div>
+
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+        </div>
+
+        <!-- Featured Transformation Slider -->
+        <div class="mt-40">
+            <div class="max-w-2xl mb-16">
+                <h2 class="text-3xl font-semibold mb-4">The Transformation</h2>
+                <p class="text-neutral-400">"Dari ruang kosong menjadi inspirasi nyata. Di PT Ecoland, kami tidak hanya
+                    membangun struktur, kami menghidupkan ruang dengan sentuhan desain yang fungsional dan eco-friendly.
+                </p>
+            </div>
+
+            <div class="ba-container group cursor-none" id="ba-section">
+                <img src="asset/ruangkosong.jpg" class="ba-img" alt="Before">
+
+                <div class="ba-after ba-img">
+                    <img src="asset/lobieco.jpg" class="ba-img" alt="After">
+                </div>
+
+                <div class="ba-slider" id="ba-handle"></div>
+                <div
+                    class="absolute bottom-10 left-10 z-20 text-xs uppercase tracking-widest bg-black/50 backdrop-blur-md px-4 py-2 rounded-full">
+                    Before</div>
+                <div
+                    class="absolute bottom-10 right-10 z-20 text-xs uppercase tracking-widest bg-white text-black px-4 py-2 rounded-full">
+                    After</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="bg-neutral-900/30 py-32 px-6 md:px-12 reveal">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="relative group">
+                <div
+                    class="absolute -inset-4 border border-white/10 rounded-3xl translate-x-4 translate-y-4 group-hover:translate-x-2 group-hover:translate-y-2 transition-all">
+                </div>
+                <img src="asset/sofaliving.jpg" alt="Hartono Design Philosophy"
+                    class="relative rounded-2xl grayscale hover:grayscale-0 transition duration-700 w-full h-full object-cover">
+            </div>
+            <div>
+                <h2 class="text-4xl font-semibold mb-8"></h2>
+                <p class="text-neutral-400 text-lg leading-relaxed mb-6 font-light">
+                    "Desain melampaui estetika; ia adalah tentang bagaimana sebuah ruang mampu bercerita. Saya
+                    memadukan setiap detail untuk menciptakan keseimbangan antara kenyamanan maksimal dan elegansi
+                    modern.
+                </p>
+                <p class="text-neutral-400 text-lg leading-relaxed font-light">
+                    "Didukung pengalaman di berbagai hunian eksklusif, saya hadir untuk menerjemahkan impian Anda
+                    menjadi kenyataan yang presisi."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Luxury Testimonials -->
+    <section class="py-32 px-6 border-y border-white/5 reveal">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="text-xs uppercase tracking-[0.3em] mb-12 block text-neutral-500">Kind Words from Clients</span>
+            <div class="testimonial-text text-3xl md:text-5xl italic font-light leading-tight mb-12">
+                "Hartono tidak hanya mendesain ruangan, ia menciptakan pengalaman hidup. Detail materialnya sungguh luar
+                biasa."
+            </div>
+            <div class="text-xs uppercase tracking-widest text-white/40">— Alexandra W., Private Villa Owner</div>
+        </div>
+    </section>
+
+    <div id="lightbox"
+        class="hidden fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+
+        <div class="lightbox-content relative animate-fade-in">
+            <!-- Close Button -->
+            <button onclick="closeLightbox()"
+                class="absolute top-6 right-6 z-50 text-white/50 hover:text-white transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Left: Image Gallery -->
+            <div
+                class="lightbox-img-container w-full md:w-[60%] bg-neutral-900 flex flex-col items-center justify-center p-4">
+                <img id="lb-img" class="rounded-xl shadow-2xl"
+                    style="object-fit: contain !important; width: 100%; height: auto; max-height: 65vh; margin: 0 auto; display: block;"
+                    src="" alt="Project Title">
+
+                <div class="relative w-full flex items-center mt-6 group px-2">
+                    <button onclick="scrollGallery(-150)"
+                        class="absolute left-0 z-20 p-2 bg-black/60 text-white rounded-full hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+
+                    <div id="lb-gallery" class="flex gap-3 overflow-x-auto w-full no-scrollbar scroll-smooth py-4">
+                    </div>
+
+                    <button onclick="scrollGallery(150)"
+                        class="absolute right-0 z-20 p-2 bg-black/60 text-white rounded-full hover:bg-white hover:text-black transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Details -->
+            <div class="w-full md:w-[40%] p-6 md:p-12 flex flex-col justify-between bg-[#0f0f0f]"
+                style="max-height: 90vh; overflow-y: auto;">
+                <div>
+                    <span id="lb-category"
+                        class="text-xs uppercase tracking-[0.3em] text-neutral-500 mb-2 block">Category</span>
+                    <h3 id="lb-title" class="text-3xl md:text-4xl font-semibold mb-6 leading-tight">Project Title</h3>
+                    <p id="lb-desc" class="text-neutral-400 font-light leading-relaxed mb-8">
+                        Description goes here...
+                    </p>
+
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <label>Location</label>
+                            <span id="lb-location">Jakarta, ID</span>
+                        </div>
+                        <div class="spec-item">
+                            <label>Year</label>
+                            <span id="lb-year">2026</span>
+                        </div>
+                        <div class="spec-item">
+                            <label>Service</label>
+                            <span id="lb-service">Full Interior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <a id="lb-whatsapp" href="#" target="_blank" class="btn-whatsapp uppercase text-sm tracking-widest">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.63 1.433h.005c6.554 0 11.892-5.335 11.895-11.892a11.817 11.817 0 00-3.418-8.413z" />
+                    </svg>
+                    Inquiry About This Design
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <section id="contact" class="py-40 text-center px-6 reveal">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-semibold mb-8 italic">Ready to transform?</h2>
+            <p class="text-neutral-500 mb-12 text-lg">Diskusikan proyek impian Anda bersama kami hari ini.</p>
+            <a href="mailto:harlyhartono@gmail.com"
+                class="text-2xl md:text-4xl font-light border-b-2 border-white/20 hover:border-white transition-all pb-2">
+                harlyhartono@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/10 text-center text-neutral-600 text-sm tracking-widest">
+        &copy; 2026 HARTONO DESIGN STUDIO. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        const projects = [
+            {
+                title: "Mr. Dodied - Perumahan Emerald Bintaro",
+                category: "Residential",
+                img: "asset/emerladtamu.jpg",
+                gallery: [
+                    "asset/emerladtamu.jpg",
+                    "asset/emerladrmakan.jpg",
+                    "asset/emerladlnatai2.jpg"
+                ],
+                desc: "Penggunaan dominasi material kayu berwarna gelap (dark wood) yang dipadukan dengan furnitur berwarna tanah (cokelat kulit, krem, dan abu-abu hangat) menciptakan identitas ruang yang maskulin namun elegan. Konsistensi warna ini membuat transisi antar ruangan (dari ruang tamu ke dapur) terasa sangat mengalir dan menyatu. Setiap sudut dimanfaatkan secara fungsional—mulai dari kabinet dapur yang rapi hingga area TV yang terintegrasi. Ini bukan sekadar tempat tinggal, melainkan sebuah ruang yang dirancang untuk mendukung gaya hidup modern yang teratur namun tetap mengutamakan kehangatan keluarga.",
+                specs: {
+                    location: "Emerald Bintaro, Tangerang Selatan",
+                    year: "2010",
+                    service: "Design & Build"
+                }
+            },
+            {
+                title: "Design Release Angry Boxing",
+                category: "Commercial",
+                img: "asset/boxin gym2.jpg",
+                gallery: [
+                    "asset/boxinlobby.jpg",
+                    "asset/boxin gym3.jpg",
+                    "asset/boxin gym2.jpg",
+                    "asset/boxin gym4.jpg",
+                    "asset/boxin gym1.jpg"
+                ],
+                desc: "Konsep 'Industrial-Athletic' ini mentransformasi ruko di Kebon Jeruk menjadi ruang olahraga yang penuh energi. Memadukan dinding  finishing concert, mural motivasi yang berani, dan aksen neon biru futuristik, desain ini menciptakan atmosfer yang memacu adrenalin. Integrasi area gym dengan resepsionis bergaya lounge menunjukkan bagaimana fungsionalitas komersial dapat tampil estetis dan berkarakter kuat.",
+                specs: { location: "Kebon Jeruk, Jakarta Barat", year: "2020", service: "Interior Design" }
+            },
+            {
+                title: "Miss silvy, Taman Ratu",
+                category: "Residential",
+                img: "asset/masterbedroomview1.png",
+                gallery: [
+                    "asset/layoutmastertamrat.png",
+                    "asset/masterbaedroomview2.png",
+                    "asset/wcoritamrat.jpeg",
+                    "asset/layout%20bathroom%20tamrat.png",
+                    "asset/bathroom%20tamrat.png"
+                ],
+                desc: "Desain ini berhasil menyatukan berbagai fungsi—area tidur, ruang kerja, dan hiburan—ke dalam satu aliran yang rapi dan tidak terasa sesak. Penempatan meja kerja yang terintegrasi langsung dengan lemari pakaian menunjukkan efisiensi desain custom yang sangat fungsional.Warna-warna bumi (earthy tones) dan abu-abu memberikan kesan tenang yang abadi. Pemberian aksen warna oranye pada kursi kerja memberikan sentuhan energi yang pas tanpa merusak ketenangan estetika ruangan secara keseluruhan.mengubah kamar mandi yang tadinya mendasar dan berantakan menjadi ruang yang estetis, fungsional, dan sangat mengundang. Detail-detail presisi dalam penempatan material dan pencahayaan benar-benar mewujudkan visi kemewahan kontemporer.",
+                specs: { location: "Perumahan Taman Ratu, Jakarta Barat", year: "2026", service: "Interior & Renovation" }
+            },
+            {
+                title: "MR. Kami Apartment",
+                category: "Apartment",
+                img: "asset/kamicover.jpeg",
+                gallery: [
+                    "asset/kamibedori.jpg",
+                    "asset/kamibed1.jpeg",
+                    "asset/kamibed2.jpeg",
+                    "asset/kamitvori.jpg",
+                    "asset/kamitv1.jpeg",
+                    "asset/kamitv2.jpeg"
+                ],
+                desc: "Design ini bermain dengan warna-warna gelap (dark tones) dan tekstur kayu. Bukannya bikin kamar terasa suram, penggunaan lampu warm white di sudut-sudut strategis justru menciptakan suasana yang sangat nyaman dan mewah (moody vibes). Desain ini berhasil membuktikan bahwa apartemen tipe studio atau satu kamar bisa tetap punya dapur lengkap, ruang tamu yang nyaman, bahkan tempat pajang sepeda, asalkan setiap sudutnya dimanfaatkan secara vertikal.",
+                specs: { location: "Serpong M-Town Residences", year: "2022", service: "Design Interior" }
+            },
+            {
+                title: "Mr. Joffy Febrianco - Transformasi Ruko Lantai 3",
+                category: "Commercial",
+                img: "asset/livingmeznine.png",
+                gallery: [
+                    "asset/sketchviw1.png",
+                    "asset/potongan mezanin.png",
+                    "asset/sketchmezanine2.png"
+                ],
+                desc: "Desain ini menceritakan tentang pemanfaatan ruang vertikal yang cerdas, mengubah fungsi ruko yang kaku menjadi hunian yang hangat dan berkarakter. Fokus utamanya adalah menciptakan 'Rumah di dalam Ruang Usaha' Proyek ini membuktikan bahwa dengan detail yang tepat, ruang komersial yang dingin bisa bertransformasi menjadi hunian modern yang estetis, fungsional, dan penuh kenyamanan.",
+                specs: { location: "Ruko 3 Lantai Petojo, Jakarta Pusat", year: "2020", service: "Interior Design & Build" }
+            },
+            {
+                title: "Design & Concept",
+                category: "Apartment",
+                img: "asset/aparteview1.jpg",
+                gallery: [
+                    "asset/apartevie2.jpg",
+                    "asset/aparteview3.jpg"
+                ],
+                desc: `Konsep desain apartemen Jakarta ini mengusung tema Warm Modern Contemporary, yang secara cerdik memadukan fungsionalitas hunian urban dengan suasana "sanctuary" yang intim. Palet Warna "Earthy" yang Berani: Penggunaan warna terakota dan oranye pada dinding serta tirai memberikan karakter yang kuat dan energi hangat, namun tetap seimbang berkat paduan furnitur berwarna cokelat tua dan netral.Desain ini berhasil menciptakan sebuah urban retreat yang canggih di tengah hiruk-pikuk Jakarta. Fokus utamanya adalah pada kenyamanan visual melalui pencahayaan yang presisi dan pemilihan material yang memberikan kesan mewah namun tetap homey`,
+                specs: { location: "Sudirman, Jakarta", year: "2010", service: "Design & 3D Visual" }
+            },
+            {
+                title: "Mr. Ahmad - Lebak Lestari Indah Residence",
+                category: "Residential",
+                img: "asset/kichview2.png",
+                gallery: [
+                    "asset/layoutkitchenlebak.png",
+                    "asset/kitchenview3.jpeg",
+                    "asset/kichview2.png"
+                ],
+                desc: "Proyek ini adalah studi tentang bagaimana sebuah ruangan kosong dapat dihidupkan kembali menjadi pusat gaya hidup yang fungsional dan berkelas. Desain ini menggabungkan dua fungsi utama—Dining Room dan Pantry & Bar—dalam satu aliran yang harmonis.Transformasi ini membuktikan bahwa detail terkecil dalam pemilihan material dan teknik pencahayaan dapat mengubah ruang kosong yang biasa menjadi sebuah mahakarya hunian yang mewah namun tetap terasa hangat sebagai sebuah rumah.",
+                specs: { location: "Lebak Bulus, Jakarta Selatan", year: "2022", service: "Interior Design" }
+            },
+            {
+                title: "Home Market",
+                category: "Commercial",
+                img: "asset/joglostore1.jpg",
+                gallery: [
+                    "asset/joglostore1.jpg",
+                    "asset/joglostore2.jpg"
+                ],
+                desc: `Transformasi gudang atau garasi di perumahan Taman Alfa Indah menjadi toko sayur dan buah "Home Market" ini menunjukkan pemanfaatan ruang yang sangat cerdas dengan estetika yang matang.
+Konsep Modern Rustic yang Hangat:
+Material Kayu Dominan: Penggunaan panel kayu pada dinding dan rak menciptakan suasana organik yang selaras dengan kesegaran produk pertanian.
+
+Atmosfer Boutique: Desain ini menaikkan kelas toko sayur tradisional menjadi pengalaman belanja yang premium dan nyaman bagi penghuni perumahan.`,
+                specs: { location: "Taman Alfa indah, joglo", year: "2019", service: "Design concept & 3D Visual" }
+            },
+            {
+                title: "Study Room",
+                category: "Apartment",
+                img: "asset/study3.jpg",
+                gallery: [
+                    "asset/study2.jpg",
+                    "asset/study1.jpg",
+                    "asset/study3.jpg"
+                ],
+                desc: "Konsep desain untuk ruang belajar apartemen ini memadukan fungsionalitas modern yang efisien dengan suasana artistik yang hangat dan nyaman (cozy).Karakter Artistik dan Personal: Galeri dinding poster komik/pop-art vintage yang eklektik dan penuh warna memberikan kepribadian yang kuat dan gaya artistik yang unik pada ruangan.Secara keseluruhan, desain ini berhasil menciptakan lingkungan yang inspiratif untuk belajar dan bekerja sekaligus menjadi tempat pelarian pribadi yang nyaman di dalam apartemen yang terbatas.",
+                specs: { location: "Sentul Alaya, Bogor", year: "2019", service: "Design & 3d visual" }
+            },
+            {
+                title: "Mr. Alex - Kitchen Renovation, Cendana Peak",
+                category: "Residential",
+                img: "asset/rev daualex.jpg", // Spasi biasa lebih aman
+                gallery: [
+                    "asset/beforedapur1.jpg", // Hapus satu .jpg
+                    "asset/beforedapur2.jpg",
+                    "asset/dapur alex done1.jpg",
+                    "asset/rev daualex.jpg"
+                ],
+                desc: "Transformasi dapur dari konsep 'Closed' menjadi 'Open Space' yang modern. Dengan mengganti kabinet atas yang masif menjadi floating shelves (rak ambalan terbuka), ruangan seketika terasa lebih luas dan lega. Desain ini mengutamakan kebersihan visual dengan memindahkan manajemen barang ke kabinet bawah, sehingga area kerja (worktop) tetap bersih dan fungsional. Detail presisi terlihat pada pemasangan cooker hood yang terintegrasi rapi di bawah ambalan, menciptakan keseimbangan antara fungsi teknis dan estetika.",
+                specs: {
+                    location: "Cendana Peak, Lippo Karawaci",
+                    year: "2026",
+                    service: "Kitchen Renovation"
+                }
+            },
+            {
+                title: "PT. Ecoland Citra Pratama",
+                category: "Commercial",
+                img: "asset/ecolobby2.jpg",
+                gallery: [
+                    "asset/ecokosong.jpg",
+                    "asset/ecolobby2.jpg",
+                    "asset/eco3.jpg",
+                    "asset/eco2.jpg",
+                    "asset/eco1.jpg",
+                    "asset/eco4.jpg",
+                    "asset/ecoakuntan.jpg"
+                ],
+                desc: `Design Concept: Eco-Dynamic Workspace
+
+Proyek Design & Build ini mentransformasi ruang beton mentah menjadi area kantor modern yang memadukan profesionalisme dengan elemen organik.
+
+Identitas Visual yang Segar: Penggunaan warna hijau yang dominan sebagai aksen utama memberikan identitas visual yang kuat sesuai dengan nama "Ecoland", menciptakan suasana kerja yang segar dan berenergi. Lingkungan Kerja Inspiratif: Integrasi elemen grafis dinding seperti siluet pohon dan tipografi "Think Outside The Box" bertujuan untuk memicu kreativitas dan inovasi di dalam tim.`,
+                specs: {
+                    location: "Niffaro Park, Jakarta Selatan",
+                    year: "2021",
+                    service: "Design & Build"
+                }
+            },
+            {
+                title: "After Rain Kopi, Ruko Kebon Jeruk",
+                category: "Commercial",
+                img: "asset/afterrainkopi2.jpg",
+                gallery: [
+                    "asset/afterrainkopi1.jpg",
+                    "asset/afterrainkopi2.jpg",
+                    "asset/afterkopilayout.jpg"
+                ],
+                desc: "Konsep desain After Rain Kopi, Ruko Kebon Jeruk, mengusung tema 'Modern Industrial dengan Sentuhan Hangat'. Desainnya memadukan rangka besi ekspos yang fungsional pada meja bar dan kursi bar untuk kesan modern-industrial, dengan kabinet dan permukaan meja kayu hangat untuk menciptakan suasana cozy dan menyambut. Elemen chalkboard menu yang artistik dan pencahayaan pendant yang dramatis menambah karakter unik, menyeimbangkan efisiensi operasional dengan kenyamanan pengunjung di ruang ruko yang kompak.",
+                specs: {
+                    location: "Kebon Jeruk, Jakarta Barat",
+                    year: "2026",
+                    service: "Interior Design"
+                }
+            },
+            {
+                title: "Puri Bintaro Residence",
+                category: "Residential",
+                img: "asset/puriliving.jpg",
+                gallery: [
+                    "asset/puriliving.jpg",
+                    "asset/purikitchen.jpg",
+                    "asset/purikitchen1.jpg"
+                ],
+                desc: "Hunian Modern yang Hangat dan Fungsional. Konsep desain ini menyeimbangkan efisiensi tata letak hunian terbuka modern dengan kenyamanan domestik yang mendalam. Di area dapur-makan hunian terbuka, fungsionalitas dapur diintegrasikan dengan mulus ke dalam ruang sosial, menampilkan backsplash keramik berpola untuk karakter 'rumah' yang khas di antara material kayu hangat. Sebaliknya, ruang tamu yang berdekatan dirancang sepenuhnya untuk relaksasi murni, menggunakan palet warna netral yang menenangkan, tekstur lembut, dan pencahayaan yang hangat untuk menciptakan Hunian kota yang harmonis dan mengundang.",
+                specs: {
+                    location: "Puri Bintaro, Tangerang Selatan",
+                    year: "2018",
+                    service: "Design & 3D Visual"
+                }
+            },
+            {
+                title: "Private Sanctuary - Luxury Bathroom",
+                category: "Residential",
+                img: "asset/bathroomview1.jpg",
+                gallery: [
+                    "asset/bathroomview1.jpg",
+                    "asset/bathroomview2.jpg",
+                    "asset/bathroomview3.jpg"
+                ],
+                desc: "Tekstur Batu Alam yang Hangat: Penggunaan ubin dinding bertekstur batu travertine atau limestone dengan nada krem/cokelat hangat menciptakan latar belakang organik yang menenangkan dan mewah. Permainan Cahaya Dramatis (Fitur Utama): Fitur yang paling menonjol adalah penggunaan panel dekoratif (kerawang) dengan pola organik. Cahaya yang menyaring melalui panel ini menciptakan efek bayangan bintik-bintik (dappled light effect) yang dramatis di lantai, memberikan nuansa alami, canggih, dan intim. Sentuhan Akhir Premium: Material countertop marmer gelap, jet shower modern, dan detail styling (sabun Aesop, parfum, handuk terlipat rapi, lilin) melengkapi kesan hunian kelas atas. Secara keseluruhan, desain ini berhasil menciptakan tempat pelarian pribadi yang mewah dan damai bagi pemilik rumah.",
+                specs: {
+                    location: "Jakarta Selatan, ID",
+                    year: "2011",
+                    service: "Design & 3D Visual"
+                }
+            }
+        ];
+
+
+        function renderProjects(list) {
+            const container = document.getElementById("projects-grid");
+            container.innerHTML = "";
+
+            list.forEach((p, index) => {
+                const div = document.createElement("div");
+                div.className = "project-card group cursor-pointer opacity-0 translate-y-4 animate-on-load";
+                div.style.animation = `fadeInUp 0.6s ease forwards ${index * 0.1}s`;
+
+                div.innerHTML = `
+      <div class="relative overflow-hidden rounded-2xl bg-neutral-900 aspect-[4/5]">
+        <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700" loading="lazy" />
+        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-neutral-300 mb-1">${p.category}</p>
+            <h3 class="text-xl font-medium">${p.title}</h3>
+          </div>
+        </div>
+      </div>
+    `;
+
+                div.onclick = () => {
+                    openLightbox(p);
+                };
+
+                container.appendChild(div);
+            });
+        }
+
+        function filterProjects(cat) {
+            // Update Button Style
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active-filter');
+                if (btn.innerText === cat) btn.classList.add('active-filter');
+            });
+
+            // Filter Logic
+            const filtered = cat === "All" ? projects : projects.filter(p => p.category === cat);
+            renderProjects(filtered);
+        }
+
+        function openLightbox(p) {
+            const lb = document.getElementById("lightbox");
+            document.getElementById("lb-img").src = p.img;
+            document.getElementById("lb-category").innerText = p.category;
+            document.getElementById("lb-title").innerText = p.title;
+            document.getElementById("lb-desc").innerText = p.desc;
+            document.getElementById("lb-location").innerText = p.specs.location;
+            document.getElementById("lb-year").innerText = p.specs.year;
+            document.getElementById("lb-service").innerText = p.specs.service;
+
+            // Render Gallery
+            const galleryContainer = document.getElementById("lb-gallery");
+            galleryContainer.innerHTML = "";
+            if (p.gallery) {
+                p.gallery.forEach(img => {
+                    const thumb = document.createElement("img");
+                    thumb.src = img;
+                    thumb.className = `gallery-thumb ${img === p.img ? 'active' : ''}`;
+                    thumb.onclick = () => {
+                        document.getElementById("lb-img").src = img;
+                        document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                    };
+                    galleryContainer.appendChild(thumb);
+                });
+            }
+
+            // Build WhatsApp Link
+            const message = encodeURIComponent(`Halo Hartono, saya tertarik dengan konsep proyek "${p.title}". Bisa berdiskusi lebih lanjut?`);
+            document.getElementById("lb-whatsapp").href = `https://wa.me/6281314436345?text=${message}`;
+
+            lb.classList.remove("hidden");
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").classList.add("hidden");
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on background click
+        document.getElementById("lightbox").onclick = (e) => {
+            if (e.target.id === "lightbox") closeLightbox();
+        };
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeLightbox();
+        });
+
+        function shareWebsite() {
+            const shareData = {
+                title: 'Hartono — Modern Interior Designer',
+                text: 'Lihat portofolio desain interior eksklusif dari Hartono.',
+                url: window.location.href,
+            };
+
+            // Cek apakah browser mendukung fitur Native Share (biasanya di Mobile/Modern Browser)
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log('Berhasil membagikan!'))
+                    .catch((error) => console.log('Gagal membagikan', error));
+            } else {
+                // Fallback: Copy link ke clipboard untuk browser desktop lama
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('Link website berhasil disalin! Silakan paste untuk membagikan.');
+                }).catch(err => {
+                    console.error('Gagal menyalin text: ', err);
+                });
+            }
+        }
+
+        /* Custom Cursor Logic */
+        const cursor = document.getElementById('cursor-follower');
+        document.addEventListener('mousemove', e => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1
+            });
+        });
+
+        document.addEventListener('mouseover', e => {
+            if (e.target.closest('.project-card, .ba-container')) {
+                cursor.classList.add('hovering');
+                if (e.target.closest('.project-card')) cursor.innerText = "VIEW";
+                if (e.target.closest('.ba-container')) cursor.innerText = "DRAG";
+            } else {
+                cursor.classList.remove('hovering');
+                cursor.innerText = "";
+            }
+        });
+
+        /* Before/After Logic (Klik & Drag) */
+        const baContainer = document.getElementById('ba-section');
+        const baHandle = document.getElementById('ba-handle');
+        const baAfter = document.querySelector('.ba-after');
+
+        let isDragging = false;
+
+        // 1. Mulai dragging saat mouse ditekan di dalam container
+        baContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateSlider(e); // Posisikan slider langsung ke tempat yang diklik
+        });
+
+        // 2. Berhenti dragging saat mouse dilepas atau keluar dari layar
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // 3. Update posisi HANYA jika isDragging bernilai true
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            updateSlider(e);
+        });
+
+        // Fungsi untuk menghitung dan mengubah posisi
+        function updateSlider(e) {
+            const rect = baContainer.getBoundingClientRect();
+
+            // Hitung posisi X mouse relatif terhadap container
+            let x = e.clientX - rect.left;
+
+            // Batasi agar slider tidak keluar dari batas kiri/kanan gambar
+            x = Math.max(0, Math.min(x, rect.width));
+
+            const percent = (x / rect.width) * 100;
+
+            // Update CSS clip-path dan posisi garis
+            baAfter.style.clipPath = `inset(0 0 0 ${percent}%)`;
+            baHandle.style.left = `${percent}%`;
+        }
+
+        // Tambahan: Agar lancar disentuh di HP/Tablet
+        baContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            updateSlider(e.touches[0]);
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            updateSlider(e.touches[0]);
+        }, { passive: true });
+
+        /* GSAP Parallax & Reveal */
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to("video", {
+            scrollTrigger: {
+                trigger: "video",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            },
+            y: 200,
+            scale: 1.1
+        });
+
+        gsap.utils.toArray('.reveal').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 30,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+        });
+
+        // Add reveal class to project grid on render
+        function addRevealToProjects() {
+            document.querySelectorAll('.project-card').forEach(el => el.classList.add('reveal'));
+        }
+
+        // Initial Load
+        renderProjects(projects);
+        function scrollGallery(val) {
+            const gallery = document.getElementById('lb-gallery');
+            gallery.scrollBy({ left: val, behavior: 'smooth' });
+        }
+
+        // Refresh ScrollTrigger after dynamic content load
+        ScrollTrigger.refresh();
+    </script>
+
+</body>
+
+</html>
