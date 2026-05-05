@@ -123,95 +123,61 @@
 
         @media (max-width: 768px) {
 
-            /* Pastikan kontainer utama pop-up bisa di-scroll ke bawah secara utuh */
+            /* 1. Pastikan seluruh pop-up bisa di-scroll secara alami */
             .lightbox-content {
                 flex-direction: column !important;
-                overflow-y: auto !important;
                 max-height: 95vh !important;
-                width: 94%;
+                width: 95% !important;
+                overflow-y: auto !important;
             }
 
-            /* Ubah tinggi kontainer agar menyesuaikan dengan isinya (Gambar + Thumbnail) */
+            /* 2. Berikan ruang yang lega untuk Gambar + Galeri */
             .lightbox-img-container {
                 height: auto !important;
-                min-height: 400px;
-                /* Tambahkan min-height agar lebih lega */
-                padding: 20px 10px 40px 10px !important;
+                min-height: 450px !important;
+                padding: 20px 10px 30px 10px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: flex-start !important;
-                /* Mulai dari atas agar tidak terpotong */
-                align-items: center !important;
-                width: 100% !important;
-                gap: 20px !important;
+                gap: 15px !important;
             }
 
-            /* Batasi tinggi gambar utama agar tidak memakan seluruh layar HP */
+            /* 3. Batasi tinggi foto utama agar tidak memakan semua tempat */
             #lb-img {
-                max-height: 45vh !important;
+                max-height: 40vh !important;
                 width: 100% !important;
-                height: auto !important;
                 object-fit: contain !important;
-                margin-bottom: 5px;
+                flex-shrink: 0 !important;
+                /* Mencegah foto utama mengecilkan elemen lain */
             }
 
-            /* Container wrapper untuk galeri dan panah */
-            .lightbox-img-container>div.relative {
-                margin-top: 0 !important;
-                display: flex !important;
-                width: 100% !important;
-            }
-
-            /* Pastikan baris thumbnail memiliki ruang yang cukup */
+            /* 4. FIX UTAMA: Mencegah galeri thumbnail terjepit/hilang */
             #lb-gallery {
                 display: flex !important;
-                width: 100%;
-                overflow-x: auto;
-                height: auto !important;
-                min-height: 90px;
-                /* Naikkan sedikit */
-                flex-shrink: 0;
-                padding-bottom: 10px;
-                gap: 12px !important;
+                width: 100% !important;
+                height: 90px !important;
+                /* Kunci tinggi galeri */
+                overflow-x: auto !important;
+                flex-shrink: 0 !important;
+                /* WAJIB: Mencegah elemen ini gepeng */
+                padding: 5px 0 !important;
+                gap: 10px !important;
             }
 
             .gallery-thumb {
-                width: 70px !important;
-                /* Kecilkan sedikit untuk mobile */
-                height: 70px !important;
+                width: 75px !important;
+                height: 75px !important;
                 flex-shrink: 0 !important;
-                /* WAJIB agar tidak gepeng/hilang */
-                opacity: 0.8 !important;
-                /* Lebih terlihat di mobile */
+                /* WAJIB: Agar gambar kecil tidak gepeng */
+                object-fit: cover !important;
+                border-radius: 6px !important;
             }
 
-            /* Penyesuaian Padding pada Deskripsi */
+            /* 5. Rapihkan bagian teks deskripsi di bawah */
             .w-full.md\:w-\[40\%\] {
-                padding: 25px 20px !important;
-                background: #0f0f0f;
-            }
-
-            /* Penyesuaian Slider Before/After di HP */
-            .ba-container {
-                height: 350px !important;
-                border-radius: 16px;
-            }
-
-            .ba-slider::after {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
-            }
-
-            .ba-container div[class*="absolute"] {
-                font-size: 10px;
-                padding: 4px 10px;
-                bottom: 15px;
-            }
-
-            .ba-img {
-                object-fit: contain;
-                background-color: #111;
+                padding: 20px !important;
+                background: #0f0f0f !important;
+                min-height: 300px !important;
             }
         }
 
@@ -611,13 +577,13 @@
             {
                 title: "Design Release Angry Boxing",
                 category: "Commercial",
-                img: "asset/boxin gym2.jpg",
+                img: "asset/boxin_gym2.jpg",
                 gallery: [
                     "asset/boxinlobby.jpg",
-                    "asset/boxin gym3.jpg",
-                    "asset/boxin gym2.jpg",
-                    "asset/boxin gym4.jpg",
-                    "asset/boxin gym1.jpg"
+                    "asset/boxin_gym3.jpg",
+                    "asset/boxin_gym2.jpg",
+                    "asset/boxin_gym4.jpg",
+                    "asset/boxin_gym1.jpg"
                 ],
                 desc: "Konsep 'Industrial-Athletic' ini mentransformasi ruko di Kebon Jeruk menjadi ruang olahraga yang penuh energi. Memadukan dinding  finishing concert, mural motivasi yang berani, dan aksen neon biru futuristik, desain ini menciptakan atmosfer yang memacu adrenalin. Integrasi area gym dengan resepsionis bergaya lounge menunjukkan bagaimana fungsionalitas komersial dapat tampil estetis dan berkarakter kuat.",
                 specs: { location: "Kebon Jeruk, Jakarta Barat", year: "2020", service: "Interior Design" }
@@ -630,8 +596,8 @@
                     "asset/layoutmastertamrat.png",
                     "asset/masterbaedroomview2.png",
                     "asset/wcoritamrat.jpeg",
-                    "asset/layout%20bathroom%20tamrat.png",
-                    "asset/bathroom%20tamrat.png"
+                    "asset/layout_bathroom_tamrat.png",
+                    "asset/bathroom_tamrat.png"
                 ],
                 desc: "Desain ini berhasil menyatukan berbagai fungsi—area tidur, ruang kerja, dan hiburan—ke dalam satu aliran yang rapi dan tidak terasa sesak. Penempatan meja kerja yang terintegrasi langsung dengan lemari pakaian menunjukkan efisiensi desain custom yang sangat fungsional.Warna-warna bumi (earthy tones) dan abu-abu memberikan kesan tenang yang abadi. Pemberian aksen warna oranye pada kursi kerja memberikan sentuhan energi yang pas tanpa merusak ketenangan estetika ruangan secara keseluruhan.mengubah kamar mandi yang tadinya mendasar dan berantakan menjadi ruang yang estetis, fungsional, dan sangat mengundang. Detail-detail presisi dalam penempatan material dan pencahayaan benar-benar mewujudkan visi kemewahan kontemporer.",
                 specs: { location: "Perumahan Taman Ratu, Jakarta Barat", year: "2026", service: "Interior & Renovation" }
@@ -716,12 +682,12 @@ Atmosfer Boutique: Desain ini menaikkan kelas toko sayur tradisional menjadi pen
             {
                 title: "Mr. Alex - Kitchen Renovation, Cendana Peak",
                 category: "Residential",
-                img: "asset/rev daualex.jpg", // Spasi biasa lebih aman
+                img: "asset/rev_daualex.jpg", // Spasi biasa lebih aman
                 gallery: [
                     "asset/beforedapur1.jpg", // Hapus satu .jpg
                     "asset/beforedapur2.jpg",
-                    "asset/dapur alex done1.jpg",
-                    "asset/rev daualex.jpg"
+                    "asset/dapur_alex_done1.jpg",
+                    "asset/rev_daualex.jpg"
                 ],
                 desc: "Transformasi dapur dari konsep 'Closed' menjadi 'Open Space' yang modern. Dengan mengganti kabinet atas yang masif menjadi floating shelves (rak ambalan terbuka), ruangan seketika terasa lebih luas dan lega. Desain ini mengutamakan kebersihan visual dengan memindahkan manajemen barang ke kabinet bawah, sehingga area kerja (worktop) tetap bersih dan fungsional. Detail presisi terlihat pada pemasangan cooker hood yang terintegrasi rapi di bawah ambalan, menciptakan keseimbangan antara fungsi teknis dan estetika.",
                 specs: {
@@ -996,47 +962,50 @@ Identitas Visual yang Segar: Penggunaan warna hijau yang dominan sebagai aksen u
         }, { passive: true });
 
         /* GSAP Parallax & Reveal */
-        gsap.registerPlugin(ScrollTrigger);
+        window.onload = () => {
+            gsap.registerPlugin(ScrollTrigger);
 
-        gsap.to("video", {
-            scrollTrigger: {
-                trigger: "video",
-                start: "top top",
-                end: "bottom top",
-                scrub: true
-            },
-            y: 200,
-            scale: 1.1
-        });
-
-        gsap.utils.toArray('.reveal').forEach(el => {
-            gsap.from(el, {
+            gsap.to("video", {
                 scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none none"
+                    trigger: "video",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
                 },
-                opacity: 0,
-                y: 30,
-                duration: 1.2,
-                ease: "power2.out"
+                y: 200,
+                scale: 1.1
             });
-        });
+
+            gsap.utils.toArray('.reveal').forEach(el => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 30,
+                    duration: 1.2,
+                    ease: "power2.out"
+                });
+            });
+
+            // Initial Load
+            renderProjects(projects);
+
+            // Refresh ScrollTrigger after dynamic content load
+            ScrollTrigger.refresh();
+        };
 
         // Add reveal class to project grid on render
         function addRevealToProjects() {
             document.querySelectorAll('.project-card').forEach(el => el.classList.add('reveal'));
         }
 
-        // Initial Load
-        renderProjects(projects);
         function scrollGallery(val) {
             const gallery = document.getElementById('lb-gallery');
             gallery.scrollBy({ left: val, behavior: 'smooth' });
         }
-
-        // Refresh ScrollTrigger after dynamic content load
-        ScrollTrigger.refresh();
     </script>
 
 </body>
